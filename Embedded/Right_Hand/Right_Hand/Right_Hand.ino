@@ -26,7 +26,10 @@ void setup() {
   outer_shoulder.attach(OUTER_SHOULDER);
   under_shoulder.attach(UNDER_SHOULDER);
   elbow.attach(ELBOW);
-  return_position();
+  inner_shoulder.write(0);
+  outer_shoulder.write(20);
+  under_shoulder.write(90);
+  elbow.write(0);
   Serial.begin(9600);
 }
 
@@ -52,6 +55,15 @@ void hand_shake() {
   return_position();
 }
 
+void flex() {
+  smoothMove(outer_shoulder, outer_shoulder.read(), 110);
+  smoothMove(under_shoulder, under_shoulder.read(), 180);
+  delay(50);
+  smoothMove(elbow, elbow.read(), 110);
+  delay(5000);
+  return_position();
+}
+
 void loop() {
   serial_input = Serial.read();
   if (serial_input == '1') {
@@ -59,6 +71,8 @@ void loop() {
   } else if (serial_input == '2') {
     salute();
   } else if (serial_input == '3') {
+    flex();
+  } else if (serial_input == '4') {
     return_position();
   }
 }
